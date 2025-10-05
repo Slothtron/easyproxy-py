@@ -12,7 +12,7 @@ from .proxy import SimpleHTTPProxy
 
 
 @click.group()
-@click.version_option(version="0.2.0", prog_name="easyproxy")
+@click.version_option(version="0.3.0")
 def cli():
     """EasyProxy - 多协议代理服务器"""
     pass
