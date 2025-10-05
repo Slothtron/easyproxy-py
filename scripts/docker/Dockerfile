@@ -29,7 +29,7 @@ FROM python:3.11-slim
 
 LABEL maintainer="Slothtron <lolioycmd@foxmail.com>"
 LABEL description="EasyProxy Multi-Protocol Proxy Server"
-LABEL version="0.1.0"
+LABEL version="0.2.0"
 
 # 创建非 root 用户
 RUN groupadd -r easyproxy && \
@@ -65,5 +65,5 @@ ENV PYTHONUNBUFFERED=1
 # 入口点
 ENTRYPOINT ["easyproxy"]
 
-# 默认命令
-CMD ["start", "-c", "/etc/easyproxy/config.yaml"]
+# 默认命令 (日志输出到容器日志,也可以通过 --log-file 指定文件)
+CMD ["start", "-c", "/etc/easyproxy/config.yaml", "--log-file", "/var/log/easyproxy/easyproxy.log"]

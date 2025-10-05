@@ -12,7 +12,7 @@ from .proxy import SimpleHTTPProxy
 
 
 @click.group()
-@click.version_option(version="0.1.0", prog_name="easyproxy")
+@click.version_option(version="0.2.0", prog_name="easyproxy")
 def cli():
     """EasyProxy - 多协议代理服务器"""
     pass
@@ -39,11 +39,17 @@ def cli():
     type=click.Choice(["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"], case_sensitive=False),
     help="日志级别 (覆盖配置文件)"
 )
+@click.option(
+    "-l", "--log-file",
+    type=click.Path(path_type=Path),
+    help="日志文件路径 (覆盖配置文件)"
+)
 def start(
     config: Optional[Path],
     host: Optional[str],
     port: Optional[int],
-    log_level: Optional[str]
+    log_level: Optional[str],
+    log_file: Optional[Path]
 ):
     """启动代理服务器"""
     
@@ -62,11 +68,15 @@ def start(
         proxy_config.port = port
     if log_level:
         proxy_config.log_level = log_level.upper()
+    if log_file:
+        proxy_config.log_file = str(log_file)
     
     # 显示配置信息
     click.echo(f"监听地址: {proxy_config.host}:{proxy_config.port}")
     click.echo(f"支持协议: {', '.join(proxy_config.protocols).upper()}")
     click.echo(f"日志级别: {proxy_config.log_level}")
+    if proxy_config.log_file:
+        click.echo(f"日志文件: {proxy_config.log_file}")
     click.echo("")
     
     # 启动代理服务器

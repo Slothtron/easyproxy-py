@@ -73,6 +73,14 @@ easyproxy start -p 8080 --log-level DEBUG
 
 # 自定义监听地址
 easyproxy start -H 127.0.0.1 -p 7899
+
+# 指定日志文件
+easyproxy start -l /var/log/easyproxy/proxy.log
+# 或使用长选项
+easyproxy start --log-file /var/log/easyproxy/proxy.log
+
+# 组合使用多个参数
+easyproxy start -p 8080 --log-level DEBUG --log-file /var/log/easyproxy/proxy.log
 ```
 
 服务器默认在 `0.0.0.0:7899` 上启动。
@@ -124,6 +132,7 @@ easyproxy start [OPTIONS]
   -p, --port INTEGER      监听端口 (覆盖配置文件)
   --log-level [DEBUG|INFO|WARNING|ERROR|CRITICAL]
                           日志级别 (覆盖配置文件)
+  -l, --log-file PATH     日志文件路径 (覆盖配置文件)
 ```
 
 ### 生成配置文件

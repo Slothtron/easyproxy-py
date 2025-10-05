@@ -54,6 +54,11 @@ sudo nano /etc/easyproxy/config.yaml
 sudo systemctl start easyproxy
 ```
 
+**日志说明:**
+- 日志同时输出到 systemd journal 和文件 `/var/log/easyproxy/easyproxy.log`
+- 查看 journal 日志: `sudo journalctl -u easyproxy -f`
+- 查看文件日志: `sudo tail -f /var/log/easyproxy/easyproxy.log`
+
 ### 常用命令
 
 ```bash
@@ -89,6 +94,7 @@ sudo systemctl daemon-reload
 
 - **服务文件**: `/etc/systemd/system/easyproxy.service`
 - **配置文件**: `/etc/easyproxy/config.yaml`
+- **日志文件**: `/var/log/easyproxy/easyproxy.log`
 - **日志目录**: `/var/log/easyproxy/`
 - **工作目录**: `/opt/easyproxy/`
 
@@ -104,7 +110,14 @@ sudo nano /etc/systemd/system/easyproxy.service
 **1. 修改监听端口**
 ```ini
 [Service]
-ExecStart=/usr/bin/easyproxy start -c /etc/easyproxy/config.yaml -p 8080
+ExecStart=/usr/bin/easyproxy start -c /etc/easyproxy/config.yaml -p 8080 --log-file /var/log/easyproxy/easyproxy.log
+```
+
+**2. 只输出到 systemd journal (不写文件)**
+```ini
+[Service]
+ExecStart=/usr/bin/easyproxy start -c /etc/easyproxy/config.yaml
+# 移除 --log-file 参数
 ```
 
 **2. 调整资源限制**
@@ -120,7 +133,7 @@ MemoryLimit=2G
 LimitNOFILE=1048576
 ```
 
-**3. 修改运行用户**
+**4. 修改运行用户**
 ```ini
 [Service]
 User=myuser
@@ -210,6 +223,12 @@ docker exec -it easyproxy /bin/bash  # 进入容器
 ```
 
 ### 配置说明
+
+**日志说明:**
+- 日志同时输出到容器日志和文件 `/var/log/easyproxy/easyproxy.log`
+- 查看容器日志: `docker logs -f easyproxy`
+- 查看文件日志: `docker exec easyproxy tail -f /var/log/easyproxy/easyproxy.log`
+- 或通过挂载的 `./logs` 目录访问: `tail -f ./logs/easyproxy.log`
 
 **端口映射**
 

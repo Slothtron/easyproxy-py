@@ -57,7 +57,11 @@ docker run -d \
 3. **查看日志**
 
 ```bash
+# 查看容器日志
 docker logs -f easyproxy
+
+# 或查看日志文件
+tail -f logs/easyproxy.log
 ```
 
 4. **停止容器**
@@ -70,6 +74,23 @@ docker rm easyproxy
 ---
 
 ## 配置说明
+
+### 日志管理
+
+日志同时输出到:
+1. **容器标准输出** - 通过 `docker logs` 查看
+2. **日志文件** - `/var/log/easyproxy/easyproxy.log` (挂载到主机 `./logs` 目录)
+
+```bash
+# 查看容器日志
+docker logs -f easyproxy
+
+# 查看文件日志
+tail -f logs/easyproxy.log
+
+# 进入容器查看
+docker exec easyproxy tail -f /var/log/easyproxy/easyproxy.log
+```
 
 ### 端口映射
 
@@ -184,7 +205,7 @@ docker exec easyproxy netstat -tlnp
 
 1. **使用具体版本标签**
    ```yaml
-   image: slothtron/easyproxy:0.1.0  # 而不是 :latest
+   image: slothtron/easyproxy:0.2.0  # 而不是 :latest
    ```
 
 2. **配置日志驱动**

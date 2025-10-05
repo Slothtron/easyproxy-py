@@ -15,7 +15,8 @@ Group=easyproxy
 WorkingDirectory=/opt/easyproxy
 
 # 启动命令 (根据实际安装路径调整)
-ExecStart=/usr/bin/easyproxy start -c /etc/easyproxy/config.yaml
+# 注意: 日志输出到 systemd journal,也可以通过 --log-file 指定文件
+ExecStart=/usr/bin/easyproxy start -c /etc/easyproxy/config.yaml --log-file /var/log/easyproxy/easyproxy.log
 
 # 优雅重载配置 (发送 SIGHUP)
 ExecReload=/bin/kill -HUP $MAINPID
