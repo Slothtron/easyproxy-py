@@ -26,7 +26,7 @@ easyproxy-py/
 ├── pyproject.toml        # 项目配置和打包元数据 (PEP 518)
 ├── MANIFEST.in           # 额外文件包含规则
 ├── requirements.txt      # 运行时依赖
-├── justfile             # 任务运行器 (Just)
+├── Makefile             # 任务运行器 (Make)
 ├── README.md            # 项目说明
 ├── QUICKSTART.md        # 快速参考
 ├── LICENSE              # MIT 许可证
@@ -102,8 +102,8 @@ structlog>=24.1.0
 
 3. **开发模式安装**
    ```bash
-   # 使用 Just (推荐)
-   just dev
+   # 使用 Make (推荐)
+   make dev
    
    # 或手动安装
    pip install -e .
@@ -113,7 +113,7 @@ structlog>=24.1.0
    ```bash
    # 修改代码
    # 直接测试 (开发模式下修改立即生效)
-   just run
+   make run
    # 或
    easyproxy start
    ```
@@ -122,25 +122,26 @@ structlog>=24.1.0
 
 1. **清理旧构建**
    ```bash
-   just clean
+   make clean
    ```
 
 2. **构建分发包**
    ```bash
-   just build
+   make build
    # 或
    python -m build
    ```
 
 3. **测试安装**
    ```bash
-   just test
+   python -m venv test_venv
+   test_venv/bin/pip install dist/*.whl
+   test_venv/bin/easyproxy --version
+   rm -rf test_venv
    ```
 
 4. **检查包**
    ```bash
-   just check
-   # 或
    python -m twine check dist/*
    ```
 
@@ -148,28 +149,18 @@ structlog>=24.1.0
 
 1. **发布新版本** (自动更新版本号、构建、创建标签)
    ```bash
-   just release 0.2.0
+   make release VERSION=0.2.0
    ```
 
-2. **上传到 TestPyPI** (测试)
-   ```bash
-   just upload-test
-   ```
-
-3. **测试安装**
-   ```bash
-   pip install --index-url https://test.pypi.org/simple/ easyproxy
-   ```
-
-4. **上传到 PyPI** (正式)
-   ```bash
-   just upload
-   ```
-
-5. **推送代码和标签**
+2. **推送代码和标签**
    ```bash
    git push origin develop
    git push origin v0.2.0
+   ```
+
+3. **手动上传到 PyPI**
+   ```bash
+   python -m twine upload dist/*
    ```
 
 ## 📦 打包机制
@@ -202,69 +193,43 @@ setuptools 会自动发现 `easyproxy/` 目录作为 Python 包,因为:
 
 ## 🛠️ 工具和脚本
 
-### justfile
+### Makefile
 
-统一的任务运行器,提供所有常用命令:
+精简的任务运行器，只保留核心功能：
 
 ```bash
 # 查看所有命令
-just --list
+make help
 
-# 开发相关
-just dev                # 开发模式安装
-just install            # 正常安装
-just uninstall          # 卸载
+# 开发命令
+make dev                # 开发模式安装（包含开发依赖）
+make run                # 运行服务器
+make run ARGS='-p 8080' # 自定义端口
+make clean              # 清理构建文件
 
-# 构建相关
-just clean              # 清理
-just build              # 构建
-just check              # 检查
+# 构建命令
+make build              # 构建分发包
 
-# 测试相关
-just test               # 测试安装
-
-# 二进制相关
-just build-bin          # 打包二进制
-just install-bin        # 安装二进制
-just remove-bin         # 卸载二进制
-
-# 服务相关
-just setup-service      # 安装服务
-just remove-service     # 卸载服务
-
-# 运行相关
-just run                # 运行服务器
-just run -p 8080        # 自定义端口
-just init config.yaml   # 生成配置
-just validate config.yaml  # 验证配置
-
-# 发布相关
-just release 0.2.0      # 发布新版本
-just upload-test        # 上传到 TestPyPI
-just upload             # 上传到 PyPI
-
-# 信息相关
-just info               # 项目信息
-just help               # 帮助信息
+# 发布命令
+make release VERSION=0.3.0  # 发布新版本
 ```
 
-### Just 的优势
+### Make 的优势
 
-- **简单易用**: 语法直观,无需学习复杂的 shell 脚本
-- **跨平台**: 在 Windows/Linux/macOS 上行为一致
-- **自文档化**: `just --list` 显示所有可用命令
-- **参数支持**: 原生支持命令参数传递
-- **无需依赖**: 单个二进制文件,无需特定 shell
+- **预装**: 几乎所有 Unix/Linux 系统都预装
+- **简洁**: 只保留核心功能，易于维护
+- **标准化**: 业界标准，更多开发者熟悉
+- **快速**: 无需额外安装和配置
+- **兼容性**: 与 CI/CD 系统无缝集成
 
-详细使用说明请参考 [docs/JUSTFILE_GUIDE.md](JUSTFILE_GUIDE.md)
+详细使用说明请参考 [docs/MAKEFILE_GUIDE.md](MAKEFILE_GUIDE.md)
 
 ## 📚 文档结构
 
 - **README.md**: 项目主文档,用户首先看到的内容
 - **QUICKSTART.md**: 快速参考,常用命令速查
-- **docs/PACKAGING.md**: 详细的打包和分发指南
 - **docs/PROJECT_STRUCTURE.md**: 项目结构说明 (本文件)
-- **docs/JUSTFILE_GUIDE.md**: Justfile 使用指南
+- **docs/MAKEFILE_GUIDE.md**: Makefile 使用指南
 - **docs/architecture.md**: 技术架构文档
 
 ## 🔍 重要概念
