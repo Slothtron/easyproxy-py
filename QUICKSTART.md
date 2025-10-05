@@ -16,7 +16,7 @@ python -m build
 
 ```bash
 # 使用 Just
-just test-install
+just test
 
 # 或手动测试
 python -m venv test_env
@@ -25,6 +25,22 @@ pip install dist/*.whl
 easyproxy --version
 deactivate
 rm -rf test_env
+```
+
+### 二进制打包
+
+```bash
+# 打包二进制
+just build-bin
+
+# 安装到系统
+just install-bin
+
+# 卸载
+just remove-bin
+
+# 深度清理
+just deep-clean
 ```
 
 ### 开发模式安装
@@ -65,8 +81,14 @@ python -m twine upload dist/*
 # 清理构建文件
 just clean
 
-# 构建分发包
+# 深度清理 (包括二进制)
+just deep-clean
+
+# 构建 Python 包
 just build
+
+# 打包二进制 (推荐)
+just build-bin
 
 # 检查包
 just check
@@ -74,6 +96,22 @@ just check
 # 查看包内容
 unzip -l dist/*.whl
 tar -tzf dist/*.tar.gz
+```
+
+### 部署相关
+
+```bash
+# 安装二进制
+just install-bin
+
+# 安装 systemd 服务
+just setup-service
+
+# 卸载服务
+just remove-service
+
+# 卸载二进制
+just remove-bin
 ```
 
 ### 安装方式

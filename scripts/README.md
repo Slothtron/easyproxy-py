@@ -15,6 +15,8 @@ scripts/
 │   ├── docker-compose.yml
 │   ├── .dockerignore
 │   └── README.md
+├── build_binary.sh   # 二进制打包脚本
+├── clean_build.sh    # 清理构建产物脚本
 └── README.md         # 本文件
 ```
 
@@ -36,10 +38,30 @@ docker --version
 
 ## 🚀 快速开始
 
-### systemd
+### 二进制打包
 
 ```bash
-cd systemd
+# 使用 Just (推荐)
+just build-bin           # 打包二进制
+just install-bin         # 安装到系统
+just deep-clean          # 清理所有产物 (可选)
+
+# 或手动执行
+cd scripts
+./build_binary.sh
+sudo cp ../dist/easyproxy /usr/bin/
+./clean_build.sh         # 清理 (可选)
+```
+
+### systemd 服务
+
+```bash
+# 使用 Just (推荐)
+just setup-service       # 安装服务
+just remove-service      # 卸载服务
+
+# 或手动执行
+cd scripts/systemd
 sudo ./install.sh
 sudo systemctl start easyproxy
 ```
@@ -47,7 +69,7 @@ sudo systemctl start easyproxy
 ### Docker
 
 ```bash
-cd docker
+cd scripts/docker
 cp ../../config/config.example.yaml config.yaml
 docker-compose up -d
 ```

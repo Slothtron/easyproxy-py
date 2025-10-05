@@ -65,24 +65,24 @@ just help
 # 开发模式安装 (可编辑安装)
 just dev
 
-# 本地安装
-just install
-
-# 卸载
-just uninstall
-
 # 安装开发依赖
-just install-dev
+just setup-dev
+
+# 清理构建文件
+just clean
+
+# 深度清理所有产物
+just deep-clean
 ```
 
 ### 构建相关
 
 ```bash
-# 清理构建文件
-just clean
-
-# 构建分发包
+# 构建 Python 包 (PyPI)
 just build
+
+# 打包二进制 (推荐)
+just build-bin
 
 # 检查代码质量
 just check
@@ -91,8 +91,24 @@ just check
 ### 测试相关
 
 ```bash
-# 测试安装
-just test-install
+# 测试安装 (CI/CD)
+just test
+```
+
+### 部署相关
+
+```bash
+# 安装二进制到系统
+just install-bin
+
+# 卸载二进制
+just remove-bin
+
+# 安装 systemd 服务
+just setup-service
+
+# 卸载 systemd 服务
+just remove-service
 ```
 
 ### 运行相关
@@ -173,7 +189,23 @@ just clean
 just build
 
 # 3. 测试安装
-just test-install
+just test
+```
+
+### 场景 4: 二进制打包和部署
+
+```bash
+# 1. 打包二进制
+just build-bin
+
+# 2. 安装到系统
+just install-bin
+
+# 3. 安装 systemd 服务
+just setup-service
+
+# 4. 查看服务状态
+sudo systemctl status easyproxy
 ```
 
 ### 场景 3: 发布新版本
@@ -245,13 +277,55 @@ just --list
 
 正常安装 (`pip install .`),复制文件到 site-packages。
 
-### test-install
+### test
 
 在临时虚拟环境中测试安装:
 1. 创建虚拟环境
 2. 安装构建的包
 3. 测试命令
 4. 清理环境
+
+### build-bin
+
+打包成独立二进制文件:
+- 使用 PyInstaller
+- 自动清理 build/ 和 *.spec
+- 生成 dist/easyproxy
+
+### install-bin
+
+安装二进制文件到系统:
+- 复制到 /usr/bin/easyproxy
+- 设置执行权限
+- 验证安装
+
+### setup-service
+
+安装 systemd 服务:
+- 创建用户和目录
+- 配置服务文件
+- 启用开机自启
+
+### remove-service
+
+卸载 systemd 服务:
+- 停止并禁用服务
+- 删除服务文件
+- 可选清理用户和数据
+
+### remove-bin
+
+卸载二进制文件:
+- 删除 /usr/bin/easyproxy
+- 删除 /usr/local/bin/easyproxy
+- 提示如何卸载开发环境
+
+### deep-clean
+
+深度清理所有构建产物:
+- 清理 dist/, build/
+- 清理 *.spec, *.egg-info
+- 清理 __pycache__, *.pyc
 
 ### run
 

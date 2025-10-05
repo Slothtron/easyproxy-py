@@ -134,7 +134,7 @@ structlog>=24.1.0
 
 3. **测试安装**
    ```bash
-   just test-install
+   just test
    ```
 
 4. **检查包**
@@ -221,7 +221,16 @@ just build              # 构建
 just check              # 检查
 
 # 测试相关
-just test-install       # 测试安装
+just test               # 测试安装
+
+# 二进制相关
+just build-bin          # 打包二进制
+just install-bin        # 安装二进制
+just remove-bin         # 卸载二进制
+
+# 服务相关
+just setup-service      # 安装服务
+just remove-service     # 卸载服务
 
 # 运行相关
 just run                # 运行服务器
