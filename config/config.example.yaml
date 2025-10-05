@@ -1,0 +1,47 @@
+# EasyProxy 配置文件示例
+# 复制此文件为 config.yaml 并根据需要修改
+
+# 服务器配置
+host: 0.0.0.0              # 监听地址
+port: 7899                 # 监听端口
+
+# 协议配置 - 可以选择性启用
+protocols:
+  - http                   # HTTP代理
+  - https                  # HTTPS代理
+  - socks5                 # SOCKS5代理
+
+# 连接配置
+max_connections: 1000      # 最大并发连接数
+connection_timeout: 30     # 连接超时(秒)
+idle_timeout: 300          # 空闲超时(秒)
+buffer_size: 8192          # 缓冲区大小(字节)
+
+# 日志配置
+log_level: INFO            # DEBUG | INFO | WARNING | ERROR | CRITICAL
+access_log: true           # 记录每个请求
+log_file: null             # 日志文件路径,null=控制台
+
+# 示例: 仅启用SOCKS5,监听在不同端口
+# host: 127.0.0.1
+# port: 1080
+# protocols:
+#   - socks5
+
+# 示例: 开启调试日志
+# log_level: DEBUG
+# log_file: logs/easyproxy.log
+
+# 示例: 高性能配置
+# max_connections: 5000
+# buffer_size: 16384
+# connection_timeout: 60
+
+# 示例: 启用认证
+# auth:
+#   enabled: true
+#   type: basic
+#   realm: MyProxy
+#   users:
+#     admin: secret123
+#     user1: pass456

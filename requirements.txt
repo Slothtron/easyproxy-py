@@ -1,0 +1,12 @@
+# EasyProxy Dependencies
+# Python 3.11+ required
+
+# 配置管理
+pydantic>=2.6.0
+PyYAML>=6.0.1
+
+# 命令行接口
+click>=8.1.0
+
+# 日志系统
+structlog>=24.1.0
