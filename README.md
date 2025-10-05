@@ -266,9 +266,67 @@ EasyProxy使用结构化日志系统(structlog),提供以下功能:
 - ✅ **简单易用** - 开箱即用,可选配置
 - ✅ **轻量级** - 最小依赖,核心功能使用Python标准库
 
+## 守护进程部署
+
+EasyProxy 支持在 Linux 系统上作为后台守护进程运行,提供两种部署方案:
+
+### 🥇 systemd (推荐)
+
+适用于现代 Linux 发行版 (Ubuntu 16.04+, CentOS 7+, Debian 8+):
+
+```bash
+# 快速安装
+cd scripts/systemd
+sudo ./install.sh
+
+# 启动服务
+sudo systemctl start easyproxy
+
+# 查看状态
+sudo systemctl status easyproxy
+
+# 查看日志
+sudo journalctl -u easyproxy -f
+```
+
+**特点:**
+- ✅ 系统原生支持,零依赖
+- ✅ 开机自启,崩溃自动重启
+- ✅ 完善的日志管理和安全隔离
+- ✅ 最佳性能和稳定性
+
+### 🥈 Docker (容器化)
+
+适用于容器化部署场景:
+
+```bash
+# 使用 Docker Compose
+cd scripts/docker
+cp ../../config/config.example.yaml config.yaml
+docker-compose up -d
+
+# 查看日志
+docker-compose logs -f
+```
+
+**特点:**
+- ✅ 完全隔离,环境一致
+- ✅ 易于部署和扩展
+- ✅ 内置健康检查和日志轮转
+
+### 📖 详细文档
+
+查看完整的守护进程部署指南: [docs/DAEMON.md](docs/DAEMON.md)
+
+包含:
+- 详细的安装步骤和配置说明
+- 常用命令和管理操作
+- 性能优化和安全加固
+- 故障排查和监控集成
+
 ## 架构
 
-基于Python asyncio的事件驱动架构,详见 `docs/architecture.md`。
+基于Python asyncio的事件驱动架构,详见 [docs/architecture.md](docs/architecture.md)。
 
 ## 许可
 
